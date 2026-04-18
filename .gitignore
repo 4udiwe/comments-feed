@@ -1,0 +1,12 @@
+*.test
+*.out
+coverage.out
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.iml
+.env
+
+

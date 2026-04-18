@@ -1,0 +1,15 @@
+app:
+  name: "comments-feed"
+  version: "1.0.0"
+
+http:
+  port: "8080"
+
+logger:
+  level: "debug"
+
+postgres:
+  connect_timeout: 5s
+
+storage:
+  type: ${STORAGE_TYPE:memory} # memory | postgres

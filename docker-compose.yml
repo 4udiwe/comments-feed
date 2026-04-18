@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: comments-feed-postgres
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: comments-feed
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d comments-feed" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - comments-feed-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: comments-feed-api
+    environment:
+      STORAGE_TYPE: ${STORAGE_TYPE}
+      POSTGRES_URL: "postgres://user:password@postgres:5432/comments-feed"
+      CONFIG_PATH: "/config/config.yaml"
+
+    ports:
+      - "8080:8080"
+    networks:
+      - comments-feed-network
+    volumes:
+      - ./config:/config
+
+volumes:
+  postgres_data:
+
+networks:
+  comments-feed-network:
+    driver: bridge
