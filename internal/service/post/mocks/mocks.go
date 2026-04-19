@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	model "github.com/4udiwe/commnets-feed/internal/graph/model"
+	model "github.com/4udiwe/comments-feed/internal/graph/model"
 	gomock "go.uber.org/mock/gomock"
 )
 

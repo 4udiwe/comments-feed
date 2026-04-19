@@ -3,7 +3,7 @@ package loaders
 import (
 	"context"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
 	"github.com/graph-gophers/dataloader/v7"
 )
 

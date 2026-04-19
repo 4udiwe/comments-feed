@@ -1,4 +1,4 @@
-module github.com/4udiwe/commnets-feed
+module github.com/4udiwe/comments-feed
 
 go 1.25.7
 

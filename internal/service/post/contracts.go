@@ -3,7 +3,7 @@ package post_service
 import (
 	"context"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
 )
 
 //go:generate go tool mockgen -source=contracts.go -destination=mocks/mocks.go

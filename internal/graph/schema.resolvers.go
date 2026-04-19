@@ -7,20 +7,35 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/graph/loaders"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
 )
 
 // Children is the resolver for the children field.
 func (r *commentResolver) Children(ctx context.Context, obj *model.Comment, limit int32, offset int32) ([]*model.Comment, error) {
-	// Вся логика батчевания и пагинации находится в сервисе
-	// Резолвер просто делегирует вызов
-	return r.CommentService.GetChildrenWithPagination(
-		ctx,
-		obj.ID,
-		int(limit),
-		int(offset),
-	)
+	loader := loaders.GetChildrenLoader(ctx)
+	if loader == nil {
+		return nil, fmt.Errorf("loader not found in context")
+	}
+
+	thunk := loader.Load(ctx, obj.ID)
+
+	comments, err := thunk()
+	if err != nil {
+		return nil, err
+	}
+
+	return paginate(comments, int(limit), int(offset)), nil
+	// // Вся логика батчевания и пагинации находится в сервисе
+	// // Резолвер просто делегирует вызов
+	// return r.CommentService.GetChildrenWithPagination(
+	// 	ctx,
+	// 	obj.ID,
+	// 	int(limit),
+	// 	int(offset),
+	// )
 }
 
 // CreatePost is the resolver for the createPost field.
@@ -35,14 +50,29 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input model.Create
 
 // Comments is the resolver for the comments field.
 func (r *postResolver) Comments(ctx context.Context, obj *model.Post, limit int32, offset int32) ([]*model.Comment, error) {
-	// Вся логика батчевания и пагинации находится в сервисе
-	// Резолвер просто делегирует вызов
-	return r.CommentService.GetCommentsByPostWithPagination(
-		ctx,
-		obj.ID,
-		int(limit),
-		int(offset),
-	)
+
+	loader := loaders.GetCommentsByPostLoader(ctx)
+	if loader == nil {
+		return nil, fmt.Errorf("loader not found in context")
+	}
+
+	thunk := loader.Load(ctx, obj.ID)
+
+	comments, err := thunk()
+	if err != nil {
+		return nil, err
+	}
+
+	return paginate(comments, int(limit), int(offset)), nil
+
+	// // Вся логика батчевания и пагинации находится в сервисе
+	// // Резолвер просто делегирует вызов
+	// return r.CommentService.GetCommentsByPostWithPagination(
+	// 	ctx,
+	// 	obj.ID,
+	// 	int(limit),
+	// 	int(offset),
+	// )
 }
 
 // Posts is the resolver for the posts field.

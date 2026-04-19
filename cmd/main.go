@@ -4,7 +4,7 @@ import (
 	"os"
 	"runtime/debug"
 
-	"github.com/4udiwe/commnets-feed/internal/app"
+	"github.com/4udiwe/comments-feed/internal/app"
 	"github.com/sirupsen/logrus"
 )
 

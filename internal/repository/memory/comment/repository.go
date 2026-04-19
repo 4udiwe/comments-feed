@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
-	"github.com/4udiwe/commnets-feed/internal/repository"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/repository"
 	"github.com/sirupsen/logrus"
 )
 

@@ -5,10 +5,10 @@ import (
 	"errors"
 	"testing"
 
-	grapqlerrors "github.com/4udiwe/commnets-feed/internal/graph/errors"
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
-	"github.com/4udiwe/commnets-feed/internal/repository"
-	mock_post_service "github.com/4udiwe/commnets-feed/internal/service/post/mocks"
+	grapqlerrors "github.com/4udiwe/comments-feed/internal/graph/errors"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/repository"
+	mock_post_service "github.com/4udiwe/comments-feed/internal/service/post/mocks"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -166,7 +166,8 @@ func TestCreatePost(t *testing.T) {
 			defer ctrl.Finish()
 
 			repo := tt.setupMocks(ctrl)
-			service := NewPostService(repo)
+			validator := grapqlerrors.NewInputValidator()
+			service := NewPostService(repo, *validator)
 
 			result, err := service.CreatePost(context.Background(), tt.input)
 
@@ -276,7 +277,8 @@ func TestGetPost(t *testing.T) {
 			defer ctrl.Finish()
 
 			repo := tt.setupMocks(ctrl)
-			service := NewPostService(repo)
+			validator := grapqlerrors.NewInputValidator()
+			service := NewPostService(repo, *validator)
 
 			result, err := service.GetPost(context.Background(), tt.postID)
 
@@ -446,7 +448,8 @@ func TestListPosts(t *testing.T) {
 			defer ctrl.Finish()
 
 			repo := tt.setupMocks(ctrl)
-			service := NewPostService(repo)
+			validator := grapqlerrors.NewInputValidator()
+			service := NewPostService(repo, *validator)
 
 			result, err := service.ListPosts(context.Background(), tt.limit, tt.offset)
 

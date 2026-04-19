@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
-	"github.com/4udiwe/commnets-feed/internal/repository"
-	postgres_repository "github.com/4udiwe/commnets-feed/internal/repository/postgres"
-	"github.com/4udiwe/commnets-feed/pkg/postgres"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/repository"
+	postgres_repository "github.com/4udiwe/comments-feed/internal/repository/postgres"
+	"github.com/4udiwe/comments-feed/pkg/postgres"
 	"github.com/jackc/pgx/v5"
 	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
@@ -61,7 +61,7 @@ func (r *CommentRepository) Create(ctx context.Context, comment *model.Comment) 
 		return mapped
 	}
 
-	logrus.WithField("comment_id", id).Info("comment created")
+	logrus.WithField("comment_id", id).Debug("comment created")
 	return nil
 }
 
@@ -99,7 +99,7 @@ func (r *CommentRepository) GetByID(ctx context.Context, id string) (*model.Comm
 		return nil, fmt.Errorf("failed to get comment: %w", repository.MapPgError(err))
 	}
 
-	logrus.WithField("comment_id", id).Info("comment fetched")
+	logrus.WithField("comment_id", id).Debug("comment fetched")
 	return commentDTO.ToEntity(), nil
 }
 
@@ -151,7 +151,7 @@ func (r *CommentRepository) GetByPostID(
 		return dto.ToEntity()
 	})
 
-	logrus.WithField("count", len(comments)).Info("comments fetched by post")
+	logrus.WithField("count", len(comments)).Debug("comments fetched by post")
 	return comments, nil
 }
 
@@ -203,7 +203,7 @@ func (r *CommentRepository) GetChildren(
 		return dto.ToEntity()
 	})
 
-	logrus.WithField("count", len(comments)).Info("children fetched")
+	logrus.WithField("count", len(comments)).Debug("children fetched")
 	return comments, nil
 }
 

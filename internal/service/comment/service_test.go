@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/4udiwe/commnets-feed/internal/broker"
-	grapqlerrors "github.com/4udiwe/commnets-feed/internal/graph/errors"
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
-	mock_transactor "github.com/4udiwe/commnets-feed/internal/mocks"
-	mock_comment_service "github.com/4udiwe/commnets-feed/internal/service/comment/mocks"
+	"github.com/4udiwe/comments-feed/internal/broker"
+	grapqlerrors "github.com/4udiwe/comments-feed/internal/graph/errors"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
+	mock_transactor "github.com/4udiwe/comments-feed/internal/mocks"
+	mock_comment_service "github.com/4udiwe/comments-feed/internal/service/comment/mocks"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -291,8 +291,9 @@ func TestCreateComment(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
+			validator := grapqlerrors.NewInputValidator()
 			commentRepo, commentBroker, postRepo, txManager := tt.setupMocks(ctrl)
-			service := NewCommentService(commentRepo, commentBroker, postRepo, txManager)
+			service := NewCommentService(commentRepo, commentBroker, postRepo, txManager, *validator)
 
 			result, err := service.CreateComment(context.Background(), tt.input)
 
@@ -390,7 +391,8 @@ func TestGetCommentsByPost(t *testing.T) {
 			defer ctrl.Finish()
 
 			commentRepo := tt.setupMocks(ctrl)
-			service := NewCommentService(commentRepo, nil, nil, nil)
+			validator := grapqlerrors.NewInputValidator()
+			service := NewCommentService(commentRepo, nil, nil, nil, *validator)
 
 			result, err := service.GetCommentsByPost(context.Background(), tt.postID, tt.limit, tt.offset)
 
@@ -492,7 +494,8 @@ func TestGetChildren(t *testing.T) {
 			defer ctrl.Finish()
 
 			commentRepo := tt.setupMocks(ctrl)
-			service := NewCommentService(commentRepo, nil, nil, nil)
+			validator := grapqlerrors.NewInputValidator()
+			service := NewCommentService(commentRepo, nil, nil, nil, *validator)
 
 			result, err := service.GetChildren(context.Background(), tt.parentID, tt.limit, tt.offset)
 
@@ -625,7 +628,8 @@ func TestSubscribeToComments(t *testing.T) {
 			defer ctrl.Finish()
 
 			commentBroker, testFn := tt.setupMocks(ctrl)
-			service := NewCommentService(nil, commentBroker, nil, nil)
+			validator := grapqlerrors.NewInputValidator()
+			service := NewCommentService(nil, commentBroker, nil, nil, *validator)
 
 			ctx := context.Background()
 

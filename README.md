@@ -43,7 +43,7 @@ make logs
 
 Переменная `STORAGE_TYPE` (memory | postgres) указывается в [Makefile](Makefile) при запуске приложения или вручную при запуске через go run
 
-Остальные параметры, такие как уровень логирования, можно указать в [config/config.yaml](config\config.yaml).
+Остальные параметры, такие как уровень логирования, можно указать в [config/config.yaml](config/config.yaml).
 
 
 ## Использование
@@ -191,12 +191,12 @@ type CommentRepository struct {
 
 ### N+1 
 Для решения проблемы множества подзапросов были использованы:
-- [DataLoader](internal\graph\loaders\loader.go) - загружает комментарии батчем для всех постов сразу
+- [DataLoader](internal/graph/loaders/loader.go) - загружает комментарии батчем для всех постов сразу
 - Batch-методы для получения данных в репозиториях
 
 ### Логирование и обработка ошибок
-Для логирования входящих HTTP-запросов используется [http_logging_middleware](internal\middleware\http_logging.go).
+Для логирования входящих HTTP-запросов используется [http_logging_middleware](internal/middleware/http_logging.go).
 
-Для логирования GrahpQL-запросов используется [operation_logging_middleware](internal\graph\middleware\logging.go) и [resolver_logging_middleware](internal\graph\middleware\resolver_logging.go) для логирования ошибок в resolver'ах.
+Для логирования GrahpQL-запросов используется [operation_logging_middleware](internal/graph/middleware/logging.go) и [resolver_logging_middleware](internal\graph\middleware\resolver_logging.go) для логирования ошибок в resolver'ах.
 
-Для обработки паник при запросе используется [resolver_logging_middleware](internal\graph\middleware\resolver_logging.go).
+Для обработки паник при запросе используется [resolver_logging_middleware](internal/graph/middleware/resolver_logging.go).

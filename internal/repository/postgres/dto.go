@@ -3,7 +3,7 @@ package postgres_repository
 import (
 	"time"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
 )
 
 // PostDTO представляет пост как он хранится в базе данных

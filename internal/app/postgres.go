@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/4udiwe/commnets-feed/config"
-	database "github.com/4udiwe/commnets-feed/internal/database/migrations"
-	"github.com/4udiwe/commnets-feed/pkg/postgres"
+	"github.com/4udiwe/comments-feed/config"
+	database "github.com/4udiwe/comments-feed/internal/database/migrations"
+	"github.com/4udiwe/comments-feed/pkg/postgres"
 	"github.com/sirupsen/logrus"
 )
 

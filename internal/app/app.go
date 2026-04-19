@@ -2,28 +2,25 @@ package app
 
 import (
 	"log"
-	"os"
 
-	"github.com/4udiwe/commnets-feed/config"
-	"github.com/4udiwe/commnets-feed/internal/broker"
-	"github.com/4udiwe/commnets-feed/internal/graph"
-	"github.com/4udiwe/commnets-feed/internal/repository"
-	comment_service "github.com/4udiwe/commnets-feed/internal/service/comment"
-	post_service "github.com/4udiwe/commnets-feed/internal/service/post"
-	"github.com/4udiwe/commnets-feed/pkg/postgres"
+	"github.com/4udiwe/comments-feed/config"
+	"github.com/4udiwe/comments-feed/internal/broker"
+	"github.com/4udiwe/comments-feed/internal/graph"
+	comment_service "github.com/4udiwe/comments-feed/internal/service/comment"
+	post_service "github.com/4udiwe/comments-feed/internal/service/post"
+	"github.com/4udiwe/comments-feed/pkg/postgres"
 	"github.com/99designs/gqlgen/graphql/handler"
 )
 
 type App struct {
-	cfg       *config.Config
-	interrupt <-chan os.Signal
+	cfg *config.Config
 
 	// DB
 	postgres *postgres.Postgres
 
 	// Repositories
-	postRepo    repository.PostRepository
-	commentRepo repository.CommentRepository
+	postRepo    PostRepository
+	commentRepo CommentRepository
 
 	// Broker
 	commentBroker *broker.CommentBroker
@@ -54,8 +51,8 @@ func (app *App) Start() {
 	srv := handler.New(graph.NewExecutableSchema(
 		graph.Config{
 			Resolvers: &graph.Resolver{
-				PostService:    *app.postService,
-				CommentService: *app.commentService,
+				PostService:    app.postService,
+				CommentService: app.commentService,
 			},
 		},
 	))
@@ -63,7 +60,6 @@ func (app *App) Start() {
 	app.configureGraphQL(srv)
 	app.runHTTP(srv)
 }
-
 
 func (app *App) Stop() {
 	log.Println("stopping application...")

@@ -8,23 +8,23 @@ import (
 
 const (
 	// Error codes
-	ErrCodeValidation       = "VALIDATION_ERROR"
-	ErrCodeNotFound         = "NOT_FOUND"
-	ErrCodeUnauthorized     = "UNAUTHORIZED"
-	ErrCodeForbidden        = "FORBIDDEN"
-	ErrCodeConflict         = "CONFLICT"
-	ErrCodeInternal         = "INTERNAL_SERVER_ERROR"
-	ErrCodeBadRequest       = "BAD_REQUEST"
-	ErrCodeInvalidInput     = "INVALID_INPUT"
+	ErrCodeValidation          = "VALIDATION_ERROR"
+	ErrCodeNotFound            = "NOT_FOUND"
+	ErrCodeUnauthorized        = "UNAUTHORIZED"
+	ErrCodeForbidden           = "FORBIDDEN"
+	ErrCodeConflict            = "CONFLICT"
+	ErrCodeInternal            = "INTERNAL_SERVER_ERROR"
+	ErrCodeBadRequest          = "BAD_REQUEST"
+	ErrCodeInvalidInput        = "INVALID_INPUT"
 	ErrCodeConstraintViolation = "CONSTRAINT_VIOLATION"
 )
 
 // GraphQLError представляет ошибку GraphQL с дополнительной информацией
 type GraphQLError struct {
-	Message   string
-	Code      string
+	Message    string
+	Code       string
 	StatusHttp int
-	Original  error // исходная ошибка для логирования
+	Original   error // исходная ошибка для логирования
 }
 
 // Error реализует интерфейс error

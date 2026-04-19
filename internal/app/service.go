@@ -1,14 +1,18 @@
 package app
 
 import (
-	"github.com/4udiwe/commnets-feed/config"
-	comment_service "github.com/4udiwe/commnets-feed/internal/service/comment"
-	post_service "github.com/4udiwe/commnets-feed/internal/service/post"
-	"github.com/4udiwe/commnets-feed/pkg/transactor"
+	"github.com/4udiwe/comments-feed/config"
+	"github.com/4udiwe/comments-feed/internal/graph/errors"
+	comment_service "github.com/4udiwe/comments-feed/internal/service/comment"
+	post_service "github.com/4udiwe/comments-feed/internal/service/post"
+	"github.com/4udiwe/comments-feed/pkg/transactor"
 )
 
 func (app *App) initServices() {
-	app.postService = post_service.NewPostService(app.postRepo)
+	app.postService = post_service.NewPostService(
+		app.postRepo,
+		*errors.NewInputValidator(),
+	)
 
 	txManager := app.getTransactor()
 
@@ -17,6 +21,7 @@ func (app *App) initServices() {
 		app.commentBroker,
 		app.postRepo,
 		txManager,
+		*errors.NewInputValidator(),
 	)
 }
 

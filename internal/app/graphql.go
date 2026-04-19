@@ -6,8 +6,8 @@ import (
 	"runtime/debug"
 	"time"
 
-	gqlerrors "github.com/4udiwe/commnets-feed/internal/graph/errors"
-	gqlmiddleware "github.com/4udiwe/commnets-feed/internal/graph/middleware"
+	gqlerrors "github.com/4udiwe/comments-feed/internal/graph/errors"
+	gqlmiddleware "github.com/4udiwe/comments-feed/internal/graph/middleware"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/lru"
@@ -31,13 +31,13 @@ func (app *App) configureGraphQL(srv *handler.Server) {
 		Cache: lru.New[string](100),
 	})
 
-	// Добавляем custom error presenter для логирования и трансформации ошибок
+	// custom error presenter для логирования и трансформации ошибок
 	srv.SetErrorPresenter(gqlerrors.ErrorPresenter)
 
-	// Добавляем GraphQL operation logging middleware
+	// GraphQL operation logging middleware
 	srv.AroundOperations(gqlmiddleware.OperationLoggingMiddleware)
 
-	// Добавляем resolver error logging middleware
+	// resolver error logging middleware
 	srv.AroundFields(gqlmiddleware.ResolverErrorLoggingMiddleware)
 
 	// Ловим паники внутри resolver'ов

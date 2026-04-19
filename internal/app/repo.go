@@ -3,11 +3,11 @@ package app
 import (
 	"log"
 
-	"github.com/4udiwe/commnets-feed/config"
-	memory_comment_repository "github.com/4udiwe/commnets-feed/internal/repository/memory/comment"
-	memory_post_repository "github.com/4udiwe/commnets-feed/internal/repository/memory/post"
-	postgres_comment_repository "github.com/4udiwe/commnets-feed/internal/repository/postgres/comment"
-	postgres_post_repository "github.com/4udiwe/commnets-feed/internal/repository/postgres/post"
+	"github.com/4udiwe/comments-feed/config"
+	memory_comment_repository "github.com/4udiwe/comments-feed/internal/repository/memory/comment"
+	memory_post_repository "github.com/4udiwe/comments-feed/internal/repository/memory/post"
+	postgres_comment_repository "github.com/4udiwe/comments-feed/internal/repository/postgres/comment"
+	postgres_post_repository "github.com/4udiwe/comments-feed/internal/repository/postgres/post"
 )
 
 func (app *App) initRepositories() {

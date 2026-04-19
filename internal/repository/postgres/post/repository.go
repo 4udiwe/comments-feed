@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
-	"github.com/4udiwe/commnets-feed/internal/repository"
-	"github.com/4udiwe/commnets-feed/pkg/postgres"
-	postgres_repository "github.com/4udiwe/commnets-feed/internal/repository/postgres"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/repository"
+	postgres_repository "github.com/4udiwe/comments-feed/internal/repository/postgres"
+	"github.com/4udiwe/comments-feed/pkg/postgres"
 	"github.com/jackc/pgx/v5"
 	"github.com/samber/lo"
 	"github.com/sirupsen/logrus"
@@ -61,7 +61,7 @@ func (r *PostRepository) Create(ctx context.Context, post *model.Post) error {
 		return mapped
 	}
 
-	logrus.WithField("post_id", id).Info("post created")
+	logrus.WithField("post_id", id).Debug("post created")
 	return nil
 }
 
@@ -99,7 +99,7 @@ func (r *PostRepository) GetByID(ctx context.Context, id string) (*model.Post, e
 		return nil, fmt.Errorf("failed to get post: %w", repository.MapPgError(err))
 	}
 
-	logrus.WithField("post_id", id).Info("post fetched")
+	logrus.WithField("post_id", id).Debug("post fetched")
 	return postDTO.ToEntity(), nil
 }
 
@@ -146,7 +146,7 @@ func (r *PostRepository) List(ctx context.Context, limit int, offset int) ([]*mo
 		return dto.ToEntity()
 	})
 
-	logrus.WithField("count", len(posts)).Info("posts fetched")
+	logrus.WithField("count", len(posts)).Debug("posts fetched")
 	return posts, nil
 }
 

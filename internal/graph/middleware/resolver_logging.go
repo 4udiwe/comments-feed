@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/errors"
+	"github.com/4udiwe/comments-feed/internal/graph/errors"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/sirupsen/logrus"
 )
@@ -58,14 +58,7 @@ func ResolverErrorLoggingMiddleware(ctx context.Context, next graphql.Resolver) 
 		} else {
 			logrus.WithFields(fields).Error("Resolver error (unexpected)")
 		}
-	} else {
-		// Успешное выполнение
-		logrus.WithFields(logrus.Fields{
-			"field_name":  fieldName,
-			"field_type":  fieldType,
-			"duration_ms": duration.Milliseconds(),
-		}).Debug("Resolver executed successfully")
-	}
+	} 
 
 	return result, err
 }

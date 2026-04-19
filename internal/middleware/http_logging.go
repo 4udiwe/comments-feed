@@ -4,10 +4,15 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
 )
+
+func isWebSocketRequest(r *http.Request) bool {
+	return strings.EqualFold(r.Header.Get("Upgrade"), "websocket")
+}
 
 // HTTPLoggingMiddleware логирует все входящие и исходящие HTTP запросы
 // Логирует:
@@ -31,16 +36,20 @@ func NewHTTPLoggingMiddleware() *HTTPLoggingMiddleware {
 func (h *HTTPLoggingMiddleware) Handler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-
+		
+		if isWebSocketRequest(r) {
+			next.ServeHTTP(w, r)
+			return
+		}
 		// Логируем входящий запрос
 		h.logger.WithFields(logrus.Fields{
-			"method":        r.Method,
-			"path":          r.URL.Path,
-			"query":         r.URL.RawQuery,
-			"remote_addr":   r.RemoteAddr,
-			"user_agent":    r.UserAgent(),
-			"content_type":  r.Header.Get("Content-Type"),
-			"accept":        r.Header.Get("Accept"),
+			"method":       r.Method,
+			"path":         r.URL.Path,
+			"query":        r.URL.RawQuery,
+			"remote_addr":  r.RemoteAddr,
+			"user_agent":   r.UserAgent(),
+			"content_type": r.Header.Get("Content-Type"),
+			"accept":       r.Header.Get("Accept"),
 		}).Info("HTTP request received")
 
 		// Оборачиваем ResponseWriter для захвата кода статуса и размера ответа
@@ -56,12 +65,12 @@ func (h *HTTPLoggingMiddleware) Handler(next http.Handler) http.Handler {
 		// Логируем завершенный запрос
 		duration := time.Since(start)
 		h.logger.WithFields(logrus.Fields{
-			"method":           r.Method,
-			"path":             r.URL.Path,
-			"status_code":      wrapped.statusCode,
-			"duration_ms":      duration.Milliseconds(),
-			"response_size":    wrapped.body.Len(),
-			"remote_addr":      r.RemoteAddr,
+			"method":        r.Method,
+			"path":          r.URL.Path,
+			"status_code":   wrapped.statusCode,
+			"duration_ms":   duration.Milliseconds(),
+			"response_size": wrapped.body.Len(),
+			"remote_addr":   r.RemoteAddr,
 		}).Info("HTTP request completed")
 	})
 }
@@ -90,14 +99,6 @@ func (rw *responseWriter) Flush() {
 	if flusher, ok := rw.ResponseWriter.(http.Flusher); ok {
 		flusher.Flush()
 	}
-}
-
-// CloseNotify реализует http.CloseNotifier интерфейс
-func (rw *responseWriter) CloseNotify() <-chan bool {
-	if closeNotifier, ok := rw.ResponseWriter.(http.CloseNotifier); ok {
-		return closeNotifier.CloseNotify()
-	}
-	return nil
 }
 
 // ReadFrom реализует io.ReaderFrom интерфейс

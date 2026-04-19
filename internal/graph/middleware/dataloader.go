@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/loaders"
+	"github.com/4udiwe/comments-feed/internal/graph/loaders"
 	"github.com/sirupsen/logrus"
 )
 

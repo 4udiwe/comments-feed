@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	"github.com/4udiwe/commnets-feed/internal/graph/model"
+	"github.com/4udiwe/comments-feed/internal/graph/model"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	gqlparser "github.com/vektah/gqlparser/v2"
